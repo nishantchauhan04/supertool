@@ -27,7 +27,7 @@ export function openToolModal(tool) {
         <div class="max-w-3xl mx-auto">
           <ins class="adsbygoogle"
                style="display:block"
-               data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+               data-ad-client="ca-pub-6455259419236944"
                data-ad-slot="5566778899"
                data-ad-format="auto"
                data-full-width-responsive="true"></ins>
