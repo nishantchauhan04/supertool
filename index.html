@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="SuperTool - All-in-one toolkit with 13+ powerful tools for image conversion, PDF compression, text formatting, calculators and more. Fast, free, and privacy-focused." />
+    <title>SuperTool - All Tools in One Place</title>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+     crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Header -->
+      <header class="sticky top-0 z-30 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
+              <span class="text-white text-xl font-bold">ST</span>
+            </div>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">SuperTool</h1>
+          </div>
+          <button id="theme-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Toggle theme">
+            <svg id="theme-icon-light" class="w-6 h-6 text-gray-700 dark:text-gray-300 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+            <svg id="theme-icon-dark" class="w-6 h-6 text-gray-700 dark:text-gray-300 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Hero Section -->
+      <section class="container mx-auto px-4 py-12 text-center animate-fade-in">
+        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+          All Your Tools in <span class="text-primary-500">One Place</span>
+        </h2>
+        <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">
+          Fast, free, and privacy-focused tools for everyday tasks. No uploads, everything runs in your browser.
+        </p>
+        
+        <!-- Ad Slot 1: Horizontal Banner (Top) -->
+        <div class="max-w-4xl mx-auto mb-8">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+               data-ad-slot="1234567890"
+               data-ad-format="horizontal"
+               data-full-width-responsive="true"></ins>
+          <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
+      </section>
+
+      <!-- Tools Grid -->
+      <main class="container mx-auto px-4 pb-16">
+        <div id="tools-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <!-- Tools will be dynamically inserted here -->
+        </div>
+        
+        <!-- Ad Slot 2: Horizontal Banner (Bottom) -->
+        <div class="max-w-4xl mx-auto mt-12">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+               data-ad-slot="0987654321"
+               data-ad-format="horizontal"
+               data-full-width-responsive="true"></ins>
+          <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
+      </main>
+      
+      <!-- Footer with Ad -->
+      <footer class="bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-8">
+        <div class="container mx-auto px-4">
+          <!-- Ad Slot 3: Footer Banner -->
+          <div class="max-w-4xl mx-auto mb-6">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="1122334455"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+          </div>
+          
+          <div class="text-center text-gray-600 dark:text-gray-400 text-sm">
+            <p class="mb-2">© 2024 SuperTool. All rights reserved.</p>
+            <p>Fast, free, and privacy-focused tools for everyone.</p>
+          </div>
+        </div>
+      </footer>
+
+      <!-- Modal Container -->
+      <div id="modal-container"></div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
