@@ -1,5 +1,10 @@
+import { trackToolClick } from '../utils/analytics.js'
+
 export function openToolModal(tool) {
   const modalContainer = document.getElementById('modal-container')
+  
+  // Track tool click
+  trackToolClick(tool.name, tool.id)
   
   const modal = document.createElement('div')
   modal.className = 'modal-overlay animate-fade-in'

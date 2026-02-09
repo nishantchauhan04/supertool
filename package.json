@@ -15,6 +15,7 @@
     "vite": "^7.2.4"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.95.3",
     "browser-image-compression": "^2.0.2",
     "jspdf": "^4.0.0",
     "pdf-lib": "^1.17.1"

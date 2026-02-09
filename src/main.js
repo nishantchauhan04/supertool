@@ -2,9 +2,13 @@ import './style.css'
 import { tools } from './tools/toolsData.js'
 import { initTheme } from './utils/theme.js'
 import { openToolModal } from './components/Modal.js'
+import { trackPageVisit } from './utils/analytics.js'
 
 // Initialize theme
 initTheme()
+
+// Track page visit
+trackPageVisit()
 
 // Render tool cards
 function renderTools() {
