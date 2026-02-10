@@ -164,6 +164,29 @@
       .resize-handle.sw { bottom: -6px; left: -6px; cursor: sw-resize; }
       .resize-handle.se { bottom: -6px; right: -6px; cursor: se-resize; }
       
+      .text-layer {
+        position: absolute;
+        border: 2px solid transparent;
+        cursor: move;
+        transition: border-color 0.2s;
+        padding: 4px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        min-width: 50px;
+        min-height: 20px;
+      }
+      
+      .text-layer:hover,
+      .text-layer.selected {
+        border-color: #10b981;
+        background: rgba(16, 185, 129, 0.05);
+      }
+      
+      .text-layer.selected .resize-handle {
+        display: block;
+        background: #10b981;
+      }
+      
       .page-nav {
         display: flex;
         gap: 1rem;
@@ -258,12 +281,15 @@
       <div class="editor-layout" id="editor-layout">
         <div class="sidebar">
           <h3 style="margin-bottom: 1rem;">Add Elements</h3>
+          <button class="btn btn-primary" style="width: 100%; margin-bottom: 0.5rem;" id="add-text-btn">
+            📝 Add Text
+          </button>
           <button class="btn btn-primary" style="width: 100%; margin-bottom: 0.5rem;" id="add-image-btn">
             🖼️ Add Image
           </button>
           <input type="file" id="image-input" accept="image/*" style="display: none;">
           
-          <div class="image-list" id="image-list"></div>
+          <div class="image-list" id="elements-list"></div>
         </div>
 
         <div class="canvas-area">
@@ -301,6 +327,37 @@
               <input type="number" id="prop-height" min="10">
             </div>
             <button class="btn btn-secondary" style="width: 100%;" id="delete-btn">🗑️ Delete</button>
+          </div>
+          
+          <div id="text-properties" class="hidden">
+            <div class="prop-group">
+              <label>Text Content</label>
+              <textarea id="prop-text" rows="3" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.875rem; resize: vertical;"></textarea>
+            </div>
+            <div class="prop-group">
+              <label>Font Size (px)</label>
+              <input type="number" id="prop-fontsize" min="8" max="200" value="16">
+            </div>
+            <div class="prop-group">
+              <label>Font Color</label>
+              <input type="color" id="prop-color" value="#000000" style="width: 100%; height: 40px; border: 1px solid #d1d5db; border-radius: 6px;">
+            </div>
+            <div class="prop-group">
+              <label>Font Weight</label>
+              <select id="prop-fontweight" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.875rem;">
+                <option value="normal">Normal</option>
+                <option value="bold">Bold</option>
+              </select>
+            </div>
+            <div class="prop-group">
+              <label>X Position (px)</label>
+              <input type="number" id="prop-text-x" min="0">
+            </div>
+            <div class="prop-group">
+              <label>Y Position (px)</label>
+              <input type="number" id="prop-text-y" min="0">
+            </div>
+            <button class="btn btn-secondary" style="width: 100%;" id="delete-text-btn">🗑️ Delete</button>
           </div>
         </div>
       </div>
