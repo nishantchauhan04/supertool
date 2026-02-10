@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="PDF Editor - Add images, text, and signatures to your PDF documents" />
+    <title>PDF Editor - SuperTool</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: #f5f5f5;
+      }
+      
+      .header {
+        background: white;
+        padding: 1rem 2rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .header h1 {
+        font-size: 1.5rem;
+        color: #333;
+      }
+      
+      .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      
+      .btn-primary {
+        background: #3b82f6;
+        color: white;
+      }
+      
+      .btn-primary:hover {
+        background: #2563eb;
+      }
+      
+      .btn-secondary {
+        background: #e5e7eb;
+        color: #374151;
+      }
+      
+      .btn-secondary:hover {
+        background: #d1d5db;
+      }
+      
+      .container {
+        max-width: 1400px;
+        margin: 2rem auto;
+        padding: 0 2rem;
+      }
+      
+      .upload-area {
+        background: white;
+        border: 3px dashed #d1d5db;
+        border-radius: 12px;
+        padding: 4rem 2rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      
+      .upload-area:hover {
+        border-color: #3b82f6;
+        background: #f9fafb;
+      }
+      
+      .upload-area.dragover {
+        border-color: #3b82f6;
+        background: #eff6ff;
+      }
+      
+      .editor-layout {
+        display: none;
+        grid-template-columns: 250px 1fr 300px;
+        gap: 1.5rem;
+        margin-top: 2rem;
+      }
+      
+      .editor-layout.active {
+        display: grid;
+      }
+      
+      .sidebar {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        height: fit-content;
+      }
+      
+      .canvas-area {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .canvas-wrapper {
+        position: relative;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin: 1rem 0;
+      }
+      
+      #pdf-canvas {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+      
+      .image-layer {
+        position: absolute;
+        border: 2px solid transparent;
+        cursor: move;
+        transition: border-color 0.2s;
+      }
+      
+      .image-layer:hover,
+      .image-layer.selected {
+        border-color: #3b82f6;
+      }
+      
+      .image-layer img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        pointer-events: none;
+      }
+      
+      .resize-handle {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: #3b82f6;
+        border: 2px solid white;
+        border-radius: 50%;
+        display: none;
+      }
+      
+      .image-layer.selected .resize-handle {
+        display: block;
+      }
+      
+      .resize-handle.nw { top: -6px; left: -6px; cursor: nw-resize; }
+      .resize-handle.ne { top: -6px; right: -6px; cursor: ne-resize; }
+      .resize-handle.sw { bottom: -6px; left: -6px; cursor: sw-resize; }
+      .resize-handle.se { bottom: -6px; right: -6px; cursor: se-resize; }
+      
+      .page-nav {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      
+      .properties {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+      }
+      
+      .prop-group {
+        margin-bottom: 1.5rem;
+      }
+      
+      .prop-group label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.5rem;
+      }
+      
+      .prop-group input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 0.875rem;
+      }
+      
+      .image-list {
+        margin-top: 1.5rem;
+      }
+      
+      .image-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem;
+        background: #f9fafb;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+      }
+      
+      .image-item:hover {
+        background: #f3f4f6;
+      }
+      
+      .image-item.selected {
+        background: #eff6ff;
+        border: 2px solid #3b82f6;
+      }
+      
+      .image-item img {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+      
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>📄 PDF Editor</h1>
+      <div style="display: flex; gap: 1rem;">
+        <button class="btn btn-secondary" id="back-btn">← Back to Tools</button>
+        <button class="btn btn-primary hidden" id="download-btn">💾 Download PDF</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <div id="upload-section">
+        <div class="upload-area" id="upload-area">
+          <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="margin: 0 auto 1rem; color: #9ca3af;">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+          <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: #374151;">Upload PDF Document</h2>
+          <p style="color: #6b7280; margin-bottom: 1.5rem;">Drag and drop your PDF here, or click to browse</p>
+          <button class="btn btn-primary">Choose PDF File</button>
+          <input type="file" id="pdf-input" accept=".pdf" style="display: none;">
+        </div>
+      </div>
+
+      <div class="editor-layout" id="editor-layout">
+        <div class="sidebar">
+          <h3 style="margin-bottom: 1rem;">Add Elements</h3>
+          <button class="btn btn-primary" style="width: 100%; margin-bottom: 0.5rem;" id="add-image-btn">
+            🖼️ Add Image
+          </button>
+          <input type="file" id="image-input" accept="image/*" style="display: none;">
+          
+          <div class="image-list" id="image-list"></div>
+        </div>
+
+        <div class="canvas-area">
+          <div class="page-nav">
+            <button class="btn btn-secondary" id="prev-page">←</button>
+            <span id="page-info">Page 1 of 1</span>
+            <button class="btn btn-secondary" id="next-page">→</button>
+          </div>
+          
+          <div class="canvas-wrapper" id="canvas-wrapper">
+            <canvas id="pdf-canvas"></canvas>
+          </div>
+        </div>
+
+        <div class="properties">
+          <h3 style="margin-bottom: 1rem;">Properties</h3>
+          <div id="no-selection" style="color: #6b7280; text-align: center; padding: 2rem 0;">
+            Select an element to edit
+          </div>
+          <div id="image-properties" class="hidden">
+            <div class="prop-group">
+              <label>X Position (px)</label>
+              <input type="number" id="prop-x" min="0">
+            </div>
+            <div class="prop-group">
+              <label>Y Position (px)</label>
+              <input type="number" id="prop-y" min="0">
+            </div>
+            <div class="prop-group">
+              <label>Width (px)</label>
+              <input type="number" id="prop-width" min="10">
+            </div>
+            <div class="prop-group">
+              <label>Height (px)</label>
+              <input type="number" id="prop-height" min="10">
+            </div>
+            <button class="btn btn-secondary" style="width: 100%;" id="delete-btn">🗑️ Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/pdf-editor-app.js"></script>
+  </body>
+</html>
